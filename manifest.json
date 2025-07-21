@@ -1,0 +1,23 @@
+{
+  "name": "ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍",
+  "short_name": "Darkness TV",
+  "description": "پخش زنده شبکه‌های تلویزیونی از سراسر جهان",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/darknessm427/darknessm427/main/Image/tv.png?raw=true",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/darknessm427/darknessm427/main/Image/tv.png?raw=true",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
