@@ -1,7 +1,9 @@
 # تلویزیون آنلاین و رایگان با وب اپلیکیشن ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍![line red black](https://github.com/mansor427/IpScanner/assets/104245967/b09437c5-ffbc-49b9-ab64-fd138739dd66)
+
 <p align="center" >
    <img  width="60%"  src="https://raw.githubusercontent.com/darknessm427/Tv-Channels/main/tv.jpg" />
 </p> 
+
 
 ### به راحتی به شبکه‌های تلویزیونی از سراسر جهان دسترسی داشته باشید، لیست علاقه‌مندی‌های خود را بسازید و از تماشای بدون وقفه لذت ببرید.
 
@@ -81,3 +83,9 @@
 -Filter channels based on their streaming source (IPTV or YouTube).
 
 
+<p align="center" >
+  <img src="./image/ct (5).gif" width="30px" alt="">
+<a href = "https://x.com/Mansor427"> <img src="https://img.shields.io/badge/-X-white?style=for-the-badge&logo=x&logoColor=White&labelColor=0D1117" target="_blank"></a>
+  <a href="https://t.me/Paradise_Of_Freedom" target="_blank"><img src="https://img.shields.io/badge/-Telegram-%230077B5?style=for-the-badge&logo=telegram&logoColor=cyan&labelColor=0D1117" target="_blank"></a> 
+  <a href="https://github.com/darknessm427" target="_blank"><img src="https://img.shields.io/badge/-Github-silver?style=for-the-badge&logo=github&logoColor=silver&labelColor=0D1117" target="_blank"></a> 
+  </p>
