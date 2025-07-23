@@ -1,23 +1,23 @@
 <h1 align="center">$$\color{Gold} \large \text{ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍}$$</h1>
-<h3 align="center">$$\color{cyan} \large \text{تلویزیون آنلاین و رایگان با وب اپلیکیشن}$$</h3>
-
-
-![line red black](https://github.com/mansor427/IpScanner/assets/104245967/b09437c5-ffbc-49b9-ab64-fd138739dd66)
+<h2 align="center">$$\color{cyan} \large \text{تلویزیون آنلاین و رایگان با وب اپلیکیشن}$$</h2>
+<p align="center" >
+    <img width="50%"  src="https://github.com/mansor427/IpScanner/assets/104245967/b09437c5-ffbc-49b9-ab64-fd138739dd66">
+</p>
 
 <p align="center" >
-
-   <img  width="60%"  src="https://rand-xyz.now.sh/api/hello" />
-   
+   <img  width="60%"  src="https://rand-xyz.now.sh/api/hello" />  
    <img  width="60%"  src="https://raw.githubusercontent.com/darknessm427/Tv-Channels/main/tv.jpg" />
-
-   <img  width="60%"  src="https://rand-xyz.now.sh/api/hello" />
-   
+   <img  width="60%"  src="https://rand-xyz.now.sh/api/hello" />  
 </p> 
 
 
 ### به راحتی به شبکه‌های تلویزیونی از سراسر جهان دسترسی داشته باشید، لیست علاقه‌مندی‌های خود را بسازید و از تماشای بدون وقفه لذت ببرید.
 
  <h3 align="center">$$\color{orange} \large \text{✨ ویژگی‌های کلیدی وبسایت}$$</h3>
+
+<p align="center" >
+   <img  width="30%"  src="https://github.com/mansor427/mansor427/assets/104245967/15a9fad4-d747-464a-9cf9-e6304e03872d">
+</p>
 
 ### وبسایت "ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍" یک پلتفرم برای تماشای آنلاین شبکه‌های تلویزیونی است که امکانات زیر را ارائه می‌دهد:
 
@@ -52,18 +52,19 @@
 - کانال‌ها را بر اساس منبع پخش (IPTV یا یوتیوب) فیلتر کنید.
 
 <p align="center" >
-
-   <img  width="80%"  src="https://rand-xyz.now.sh/api/hello" />
-   
-   <img  width="80%"  src="https://rand-xyz.now.sh/api/hello" />
-   
+   <img  width="80%" src="https://github.com/mansor427/IpScanner/assets/104245967/08ccb46c-51a3-4d16-a0a4-27fb7492d35d">
 </p> 
+<h1 align="center">$$\color{Gold} \large \text{ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍}$$</h1>
+<h2 align="center">$$\color{cyan} \large \text{ Free online TV with web application }$$</h2>
 
 ### Easily access TV channels from around the world, create your own favorites list, and enjoy seamless streaming.
-![line red black](https://github.com/mansor427/IpScanner/assets/104245967/b09437c5-ffbc-49b9-ab64-fd138739dd66)
 
 
  <h3 align="center">$$\color{orange} \large \text{✨ Key Features}$$</h3>
+
+<p align="center" >
+   <img  width="20%"  src="https://github.com/mansor427/mansor427/assets/104245967/15a9fad4-d747-464a-9cf9-e6304e03872d">
+</p>
 
 ### The "ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍" website is a platform for streaming online TV channels, offering the following features:
 
@@ -97,7 +98,11 @@
 ##### Filter by Source: 
 -Filter channels based on their streaming source (IPTV or YouTube).
 
-
+<p align="center" >
+   <img  width="50%" src="https://github.com/mansor427/IpScanner/assets/104245967/08ccb46c-51a3-4d16-a0a4-27fb7492d35d">
+   <img  width="50%" src="https://github.com/mansor427/IpScanner/assets/104245967/08ccb46c-51a3-4d16-a0a4-27fb7492d35d">
+</p>
+   
 <p align="center" >
   <img src="./image/ct (5).gif" width="30px" alt="">
 <a href = "https://x.com/Mansor427"> <img src="https://img.shields.io/badge/-X-white?style=for-the-badge&logo=x&logoColor=White&labelColor=0D1117" target="_blank"></a>
