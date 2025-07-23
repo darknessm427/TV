@@ -13,10 +13,10 @@
 
 ### به راحتی به شبکه‌های تلویزیونی از سراسر جهان دسترسی داشته باشید، لیست علاقه‌مندی‌های خود را بسازید و از تماشای بدون وقفه لذت ببرید.
 
- <h3 align="center">$$\color{orange} \large \text{✨ ویژگی‌های کلیدی وبسایت}$$</h3>
+<h3 align="center">$$\color{orange} \large \text{✨ ویژگی‌های کلیدی وبسایت}$$</h3>
 
 <p align="center" >
-   <img  width="30%"  src="https://github.com/mansor427/mansor427/assets/104245967/15a9fad4-d747-464a-9cf9-e6304e03872d">
+   <img  width="35%"  src="https://github.com/mansor427/mansor427/assets/104245967/15a9fad4-d747-464a-9cf9-e6304e03872d">
 </p>
 
 ### وبسایت "ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍" یک پلتفرم برای تماشای آنلاین شبکه‌های تلویزیونی است که امکانات زیر را ارائه می‌دهد:
@@ -66,7 +66,7 @@
  <h3 align="center">$$\color{orange} \large \text{✨ Key Features}$$</h3>
 
 <p align="center" >
-   <img  width="20%"  src="https://github.com/mansor427/mansor427/assets/104245967/15a9fad4-d747-464a-9cf9-e6304e03872d">
+   <img  width="25%"  src="https://github.com/mansor427/mansor427/assets/104245967/15a9fad4-d747-464a-9cf9-e6304e03872d">
 </p>
 
 ### The "ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍" website is a platform for streaming online TV channels, offering the following features:
