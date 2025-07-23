@@ -1,4 +1,8 @@
-# تلویزیون آنلاین و رایگان با وب اپلیکیشن ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍![line red black](https://github.com/mansor427/IpScanner/assets/104245967/b09437c5-ffbc-49b9-ab64-fd138739dd66)
+<h1 align="center">$$\color{Gold} \large \text{ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍}$$</h1>
+<h3 align="center">$$\color{cyan} \large \text{تلویزیون آنلاین و رایگان با وب اپلیکیشن}$$</h3>
+
+
+![line red black](https://github.com/mansor427/IpScanner/assets/104245967/b09437c5-ffbc-49b9-ab64-fd138739dd66)
 
 <p align="center" >
 
@@ -13,7 +17,7 @@
 
 ### به راحتی به شبکه‌های تلویزیونی از سراسر جهان دسترسی داشته باشید، لیست علاقه‌مندی‌های خود را بسازید و از تماشای بدون وقفه لذت ببرید.
 
-# ✨ ویژگی‌های کلیدی وبسایت:
+ <h3 align="center">$$\color{orange} \large \text{✨ ویژگی‌های کلیدی وبسایت}$$</h3>
 
 ### وبسایت "ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍" یک پلتفرم برای تماشای آنلاین شبکه‌های تلویزیونی است که امکانات زیر را ارائه می‌دهد:
 
@@ -47,14 +51,19 @@
 #### فیلتر کردن منابع: 
 - کانال‌ها را بر اساس منبع پخش (IPTV یا یوتیوب) فیلتر کنید.
 
-![rand](https://rand-xyz.now.sh/api/hello)
-![rand](https://rand-xyz.now.sh/api/hello)
+<p align="center" >
+
+   <img  width="80%"  src="https://rand-xyz.now.sh/api/hello" />
+   
+   <img  width="80%"  src="https://rand-xyz.now.sh/api/hello" />
+   
+</p> 
 
 ### Easily access TV channels from around the world, create your own favorites list, and enjoy seamless streaming.
 ![line red black](https://github.com/mansor427/IpScanner/assets/104245967/b09437c5-ffbc-49b9-ab64-fd138739dd66)
 
 
-## ✨ Key Features:
+ <h3 align="center">$$\color{orange} \large \text{✨ Key Features}$$</h3>
 
 ### The "ÐΛɌ₭ᑎΞ𐒡𐒡 𝕋𝕍" website is a platform for streaming online TV channels, offering the following features:
 
