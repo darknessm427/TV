@@ -5,26 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ÐΛɌ₭ᑎΞ𐒡𐒡🗽𝕋𝕍</title>
     
-    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0a0a0a">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/darknessm427/darknessm427/main/Image/tv.png?raw=true">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Vazirmatn Font -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- HLS.js Player -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
-    <!-- Internal Styles & Theme -->
     <style>
         :root {
             --bg-primary: #0a0a0a;
@@ -39,9 +32,9 @@
             --accent-primary-rgb: 0, 255, 255;
             --accent-secondary-rgb: 255, 0, 255;
             --favorite-color: #ffd700;
+            --record-color: #dc3545;
         }
         
-        /* --- Light Theme --- */
         body.light-theme {
             --bg-primary: #f8f9fa;
             --bg-secondary: #ffffff;
@@ -55,6 +48,7 @@
             --accent-primary-rgb: 0, 123, 255;
             --accent-secondary-rgb: 111, 66, 193;
             --favorite-color: #ffc107;
+            --record-color: #dc3545;
         }
 
         body {
@@ -63,7 +57,7 @@
             color: var(--text-primary);
             min-height: 100vh;
             transition: background-color 0.4s, color 0.4s;
-            font-size: 14px; /* فونت کلی سایت کوچک‌تر شد */
+            font-size: 14px;
         }
 
         .glass-effect {
@@ -89,17 +83,17 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .channel-card {
+        .channel-card, .recording-card {
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
         }
-        .channel-card:hover {
+        .channel-card:hover, .recording-card:hover {
             transform: translateY(-8px) scale(1.03);
             box-shadow: 0 0 25px var(--shadow-color), 0 0 10px var(--shadow-color);
             border-color: var(--accent-primary);
         }
         
-        body.light-theme .channel-card:hover {
+        body.light-theme .channel-card:hover, body.light-theme .recording-card:hover {
             box-shadow: 0 8px 25px var(--shadow-color);
         }
 
@@ -114,7 +108,7 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
-        .filter-btn.active {
+        .filter-btn.active, #audioOnlyBtn.active {
             background-color: var(--highlight-bg);
             color: var(--accent-primary);
             border-color: var(--accent-primary);
@@ -126,13 +120,11 @@
             box-shadow: 0 0 15px var(--shadow-color), 0 0 25px var(--shadow-color);
         }
         
-        /* Sidebar Animation */
         #sideMenu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         #sideMenu.open { transform: translateX(0); }
         #menuOverlay { transition: opacity 0.4s ease; }
         #menuOverlay.open { opacity: 1; pointer-events: auto; }
 
-        /* Favorite Star Style */
         .favorite-star {
             position: absolute; top: 8px; left: 8px; cursor: pointer; font-size: 1.25rem;
             color: var(--text-secondary); transition: color 0.2s, transform 0.2s;
@@ -140,7 +132,6 @@
         .favorite-star:hover { transform: scale(1.2); }
         .favorite-star.favorited { color: var(--favorite-color); text-shadow: 0 0 8px var(--favorite-color); }
         
-        /* Skeleton Loader */
         .skeleton-card {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -150,7 +141,6 @@
             50% { opacity: .5; }
         }
 
-        /* Toast Notification */
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             background-color: var(--bg-secondary); color: var(--text-primary);
@@ -164,47 +154,84 @@
         #toast.error { border-left: 4px solid #dc3545; }
         #toast .icon { font-size: 1.2rem; }
 
-        /* Theme Color Picker */
         .color-swatch {
             width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
             border: 2px solid transparent; transition: all 0.2s;
         }
-        .color-swatch.active {
-            border-color: var(--text-primary);
-            transform: scale(1.2);
+        .color-swatch.active { border-color: var(--text-primary); transform: scale(1.2); }
+        
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        #install-tooltip-container:hover #install-tooltip {
+            opacity: 1; visibility: visible; pointer-events: auto;
         }
         
-        /* Disabled button style */
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        #recordBtn {
+            color: var(--record-color);
+            border-color: var(--record-color);
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        #recordBtn.recording {
+            animation: pulse-record 1.5s infinite;
+        }
+        @keyframes pulse-record {
+            0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+            70% { box-shadow: 0 0 10px 15px rgba(220, 53, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
         }
 
-        /* Tooltip for Install Button */
-        #install-tooltip-container:hover #install-tooltip {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+        #playerContainer.audio-mode::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f001"; /* fa-music */
+            font-size: 6rem;
+            color: var(--text-secondary);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+            z-index: 0;
+        }
+        #playerContainer.audio-mode video {
+            visibility: hidden;
+        }
+
+        .player-select {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-right: 1.5rem;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25em;
         }
     </style>
     
     <script>
         tailwind.config = {
-            theme: { extend: { 
-                fontFamily: { 'vazirmatn': ['Vazirmatn', 'sans-serif'] },
-            } }
+            theme: { extend: { fontFamily: { 'vazirmatn': ['Vazirmatn', 'sans-serif'] } } }
         }
     </script>
 </head>
 <body class="bg-[var(--bg-primary)] text-[var(--text-primary)]">
 
-    <!-- Toast Notification -->
     <div id="toast">
         <span class="icon"></span>
         <span class="message"></span>
     </div>
 
-    <!-- Navigation -->
     <nav class="sticky top-0 z-30 py-4 bg-white/5 backdrop-blur-md border-b" style="background-color: rgba(var(--bg-secondary-rgb, 26, 26, 26), 0.7); border-color: var(--border-color);">
         <div class="container mx-auto px-4 relative flex justify-center items-center h-10">
             <div class="absolute right-4 top-1/2 -translate-y-1/2">
@@ -221,60 +248,50 @@
             </div>
             <div class="absolute left-4 top-1/2 -translate-y-1/2">
                 <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full text-xl neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300">
-                    <!-- Icon will be set by JS -->
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Sidebar Menu -->
     <div id="sideMenu" class="fixed top-0 right-0 h-full w-1/2 max-w-[16rem] glass-effect z-50 flex flex-col" style="border-right: none; border-left: 1px solid var(--border-color);">
-        <!-- Menu Header -->
         <div class="p-4 flex justify-between items-center border-b border-[var(--border-color)]">
             <h2 class="text-base font-bold gradient-text">منو</h2>
             <button id="closeMenuBtn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[var(--highlight-bg)] transition-colors">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <!-- Menu Content (Scrollable) -->
         <div class="flex-grow overflow-y-auto custom-scrollbar">
-            <!-- Main Links -->
             <div class="p-2 border-b border-[var(--border-color)]">
+                 <button id="allChannelsBtn" class="w-full flex justify-between items-center px-4 py-3 text-left font-bold hover:bg-[var(--highlight-bg)] transition-colors rounded-lg text-xs">
+                    <div class="flex items-center gap-3"><i class="fas fa-globe-europe w-5 text-center" style="color: var(--accent-primary);"></i><span>همه‌ی کانال‌ها</span></div>
+                    <span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">All</span>
+                </button>
                 <button id="favoritesBtn" class="w-full flex justify-between items-center px-4 py-3 text-left font-bold hover:bg-[var(--highlight-bg)] transition-colors rounded-lg text-xs">
                     <div class="flex items-center gap-3"><i class="fas fa-star w-5 text-center" style="color: var(--favorite-color);"></i><span>علاقه‌مندی‌ها</span></div>
                     <span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">Favorites</span>
                 </button>
-                <button id="allChannelsBtn" class="w-full flex justify-between items-center px-4 py-3 text-left font-bold hover:bg-[var(--highlight-bg)] transition-colors rounded-lg text-xs">
-                    <div class="flex items-center gap-3"><i class="fas fa-globe-europe w-5 text-center" style="color: var(--accent-primary);"></i><span>همه‌ی کانال‌ها</span></div>
-                    <span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">All Channels</span>
+                <button id="recordingsBtn" class="w-full flex justify-between items-center px-4 py-3 text-left font-bold hover:bg-[var(--highlight-bg)] transition-colors rounded-lg text-xs">
+                    <div class="flex items-center gap-3"><i class="fas fa-hdd w-5 text-center"></i><span>ویدیوهای ضبط شده</span></div>
+                    <span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">Recordings</span>
                 </button>
             </div>
-            <!-- Accordions -->
             <div class="p-2">
                 <button id="categoriesAccordionBtn" class="w-full flex justify-between items-center px-4 py-3 text-left font-bold hover:bg-[var(--highlight-bg)] transition-colors rounded-lg text-xs">
                     <div class="flex items-center gap-3"><i class="fas fa-layer-group w-5 text-center"></i><span>موضوعات</span></div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">Categories</span>
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </div>
+                    <div class="flex items-center gap-2"><span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">Categories</span><i class="fas fa-chevron-down transition-transform"></i></div>
                 </button>
                 <div id="categoriesAccordionContent" class="hidden bg-black/20 px-2 py-1 rounded-b-lg"></div>
             </div>
             <div class="p-2">
                 <button id="countriesAccordionBtn" class="w-full flex justify-between items-center px-4 py-3 text-left font-bold hover:bg-[var(--highlight-bg)] transition-colors rounded-lg text-xs">
                     <div class="flex items-center gap-3"><i class="fas fa-flag w-5 text-center"></i><span>کشورها</span></div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">Countries</span>
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </div>
+                    <div class="flex items-center gap-2"><span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">Countries</span><i class="fas fa-chevron-down transition-transform"></i></div>
                 </button>
                 <div id="countriesAccordionContent" class="hidden bg-black/20 px-2 py-1 rounded-b-lg"></div>
             </div>
         </div>
         
-        <!-- This container holds the install button and theme customizer -->
         <div class="mt-auto">
-            <!-- Install App Button Section -->
             <div id="install-container" class="p-2 border-t border-[var(--border-color)]" style="display: none;">
                 <div class="flex items-center gap-3 px-4 py-1">
                     <button id="menu-install-btn" class="flex-grow flex items-center gap-3 font-bold text-left p-2 -mr-2 -my-2 hover:bg-[var(--highlight-bg)] rounded-lg transition-colors text-xs">
@@ -284,49 +301,35 @@
                     <div class="relative flex-shrink-0" id="install-tooltip-container">
                         <i class="fas fa-question-circle text-[var(--text-secondary)] cursor-help text-base"></i>
                         <div id="install-tooltip" class="absolute bottom-full right-0 mb-2 w-72 p-3 rounded-lg glass-effect text-xs shadow-lg opacity-0 invisible transition-opacity duration-300 pointer-events-none z-10">
-                            <p class="mb-2">این دکمه در ابتدا غیرفعال (خاکستری) خواهد بود و به محض اینکه مرورگر اجازه نصب را بدهد، به صورت خودکار فعال و قابل کلیک می‌شود. این بهترین راه برای اجرای درخواست شما با توجه به محدودیت‌های فنی مرورگرها است.</p>
-                            <p class="font-bold mb-1">  از قسمت سه نقطه موجود در مرورگر و بعد از باز شدن منو مرورگر هم میتوانید با زدن add to home screen گزینه نصب را مشاهده کنید</p>
+                            <p class="mb-2">این دکمه در ابتدا غیرفعال (خاکستری) خواهد بود و به محض اینکه مرورگر اجازه نصب را بدهد، به صورت خودکار فعال و قابل کلیک می‌شود.</p>
+                            <p class="font-bold mb-1">همچنین می‌توانید از منوی مرورگر (سه نقطه) گزینه "Add to Home Screen" یا "Install App" را انتخاب کنید.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Theme Customizer -->
             <div id="theme-customizer-container" class="p-4 border-t border-[var(--border-color)]">
                 <h3 class="font-bold mb-3 text-center text-sm">شخصی‌سازی رنگ تم</h3>
-                <div id="color-picker" class="flex justify-center gap-3">
-                    <!-- Color swatches will be injected here -->
-                </div>
+                <div id="color-picker" class="flex justify-center gap-3"></div>
             </div>
         </div>
 
-        <!-- Footer Logo & Socials -->
         <div class="p-4 border-t border-[var(--border-color)] flex justify-between items-center">
-            <!-- Social Icons -->
             <div class="flex items-center gap-4">
-                <a href="https://t.me/Paradise_Of_Freedom" target="_blank" rel="noopener noreferrer" class="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors text-xl">
-                    <i class="fab fa-telegram"></i>
-                </a>
-                <a href="https://x.com/mansor427" target="_blank" rel="noopener noreferrer" class="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors text-xl">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="https://github.com/darknessm427" target="_blank" rel="noopener noreferrer" class="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors text-xl">
-                    <i class="fab fa-github"></i>
-                </a>
+                <a href="https://t.me/Paradise_Of_Freedom" target="_blank" rel="noopener noreferrer" class="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors text-xl"><i class="fab fa-telegram"></i></a>
+                <a href="https://x.com/mansor427" target="_blank" rel="noopener noreferrer" class="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors text-xl"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://github.com/darknessm427" target="_blank" rel="noopener noreferrer" class="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors text-xl"><i class="fab fa-github"></i></a>
             </div>
-            <!-- Logo -->
             <img src="https://github.com/user-attachments/assets/3ec2a5a4-2bec-4af5-a976-e45f985dd63e" alt="لوگو" class="opacity-30 w-1/4">
         </div>
     </div>
 
-    <!-- Menu Overlay -->
     <div id="menuOverlay" class="fixed inset-0 bg-black/60 z-40 opacity-0 pointer-events-none"></div>
 
-    <!-- Main Content -->
     <main class="container mx-auto p-4">
-        <div class="max-w-2xl mx-auto my-8 px-4">
+        <div id="search-filter-section" class="max-w-2xl mx-auto my-8 px-4">
             <div class="text-center mb-8">
-                <h2 id="main-title" class="text-xl font-bold mb-2">کانال‌ها</h2> <!-- فونت عنوان اصلی کوچک‌تر شد -->
-                <p id="main-subtitle" class="text-[var(--text-secondary)] text-sm">یک موضوع یا کشور را از منو انتخاب کنید</p> <!-- فونت زیرعنوان کوچک‌تر شد -->
+                <h2 id="main-title" class="text-xl font-bold mb-2">کانال‌ها</h2>
+                <p id="main-subtitle" class="text-[var(--text-secondary)] text-sm">یک موضوع یا کشور را از منو انتخاب کنید</p>
             </div>
             <div class="glass-effect rounded-xl p-6 space-y-6">
                 <div class="relative"><input type="text" id="channelSearch" class="w-full pl-4 pr-12 py-3 rounded-lg border focus:ring-2 focus:outline-none transition-all bg-[var(--bg-primary)] border-[var(--border-color)] text-[var(--text-primary)] text-sm" style="--tw-ring-color: var(--accent-primary);" placeholder="نام کانال را وارد کنید..."><i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]"></i></div>
@@ -337,27 +340,67 @@
                 </div>
             </div>
         </div>
-        <div id="resultsCount" class="text-center mb-6 hidden text-[var(--text-secondary)] text-sm"><span class="font-semibold text-[var(--text-primary)]" id="channelCount">0</span> کانال یافت شد</div>
-        <!-- Channel Grid: Updated for better responsive layout -->
+        
+        <div id="resultsCount" class="text-center mb-6 hidden text-[var(--text-secondary)] text-sm"><span class="font-semibold text-[var(--text-primary)]" id="channelCount">0</span> آیتم یافت شد</div>
+        
         <div id="channelGrid" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
-        <div id="noResults" class="text-center py-12 hidden"><div class="mb-4 text-[var(--text-secondary)]"><i class="fas fa-search text-4xl"></i></div><h3 class="text-lg font-semibold mb-2">کانالی یافت نشد</h3><p class="text-[var(--text-secondary)] text-sm">لطفاً با عبارت دیگری جستجو کنید</p></div>
+        <div id="recordingsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 hidden"></div>
+        
+        <div id="noResults" class="text-center py-12 hidden"><div class="mb-4 text-[var(--text-secondary)]"><i class="fas fa-search text-4xl"></i></div><h3 class="text-lg font-semibold mb-2">موردی یافت نشد</h3><p class="text-[var(--text-secondary)] text-sm" id="noResultsMessage">لطفاً با عبارت دیگری جستجو کنید</p></div>
     </main>
 
-    <!-- Player Modal -->
     <div id="playerModal" class="hidden fixed inset-0 z-50" style="background-color: rgba(var(--bg-primary-rgb, 10, 10, 10), 0.9); backdrop-filter: blur(8px);">
         <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="glass-effect rounded-2xl w-full max-w-4xl overflow-hidden modal-animation">
-                <div class="p-4 flex justify-between items-center border-b border-[var(--border-color)]">
-                    <h2 id="channelTitle" class="text-lg font-bold truncate pr-4"></h2> <!-- فونت عنوان پلیر کوچک‌تر شد -->
+            <div class="glass-effect rounded-2xl w-full max-w-4xl overflow-hidden modal-animation flex flex-col">
+                <div class="p-4 flex justify-between items-center border-b border-[var(--border-color)] flex-shrink-0">
+                    <h2 id="channelTitle" class="text-lg font-bold truncate pr-4"></h2>
                     <button onclick="closePlayer()" class="w-8 h-8 flex items-center justify-center rounded-full transition-colors bg-[var(--bg-primary)] hover:bg-[var(--highlight-bg)]"><i class="fas fa-times"></i></button>
                 </div>
-                <div id="playerContainer" class="aspect-w-16 aspect-h-9 bg-black"></div>
-                <div class="p-4 flex flex-wrap gap-2" style="background-color: rgba(var(--bg-primary-rgb, 10, 10, 10), 0.5);">
-                    <button id="toggleIPTV" class="flex-1 px-4 py-2 rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden text-sm"><i class="fas fa-tv mr-2"></i>IPTV</button>
-                    <button id="toggleYouTube" class="flex-1 px-4 py-2 rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden text-sm"><i class="fab fa-youtube mr-2"></i>YouTube</button>
-                    <button id="pipBtn" class="w-12 h-10 flex-shrink-0 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden"><i class="fas fa-clone"></i></button>
-                    <button id="shareBtn" class="w-12 h-10 flex-shrink-0 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden"><i class="fas fa-share-alt"></i></button>
-                    <button id="fullscreenBtn" class="w-12 h-10 flex-shrink-0 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden"><i class="fas fa-expand"></i></button>
+                <div id="playerContainer" class="aspect-w-16 aspect-h-9 bg-black relative flex-grow"></div>
+                <div class="p-3 flex flex-col gap-2 flex-shrink-0" style="background-color: rgba(var(--bg-primary-rgb, 10, 10, 10), 0.5);">
+                    <!-- Main Controls -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button id="toggleIPTV" class="flex-1 px-4 py-2 rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden text-sm"><i class="fas fa-tv mr-2"></i>IPTV</button>
+                        <button id="toggleYouTube" class="flex-1 px-4 py-2 rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden text-sm"><i class="fab fa-youtube mr-2"></i>YouTube</button>
+                        <div class="flex-grow"></div>
+                        <button id="pipBtn" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden" title="تصویر در تصویر"><i class="fas fa-clone"></i></button>
+                        <button id="shareBtn" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden" title="اشتراک‌گذاری"><i class="fas fa-share-alt"></i></button>
+                        <button id="fullscreenBtn" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden" title="تمام صفحه"><i class="fas fa-expand"></i></button>
+                    </div>
+                    <!-- Advanced Controls -->
+                    <div class="flex flex-wrap items-center gap-2 border-t border-[var(--border-color)] pt-2">
+                         <!-- Recording -->
+                        <button id="recordBtn" class="flex-shrink-0 flex items-center justify-center neon-button border transition-all duration-300 hidden" title="ضبط ویدیو"><i class="fas fa-circle"></i></button>
+                        <div id="recordControlsContainer" class="flex items-center gap-2 hidden">
+                            <i class="fas fa-cog text-[var(--text-secondary)]"></i>
+                            <select id="recordingQualitySelect" class="player-select" title="کیفیت ضبط">
+                                <option value="source">کیفیت منبع</option>
+                                <option value="high">بالا (2.5Mbps)</option>
+                                <option value="medium">متوسط (1Mbps)</option>
+                                <option value="low">پایین (500kbps)</option>
+                            </select>
+                        </div>
+                        <div class="flex-grow"></div>
+                        <!-- Audio Only -->
+                        <button id="audioOnlyBtn" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)] transition-all duration-300 hidden" title="فقط صدا"><i class="fas fa-music"></i></button>
+                        <!-- Playback Quality -->
+                        <div id="qualityControlContainer" class="flex items-center gap-2 hidden">
+                            <i class="fas fa-sliders-h text-[var(--text-secondary)]"></i>
+                            <select id="qualitySelect" class="player-select" title="کیفیت پخش"></select>
+                        </div>
+                        <!-- Playback Speed -->
+                        <div id="speedControlContainer" class="flex items-center gap-2 hidden">
+                            <i class="fas fa-gauge-high text-[var(--text-secondary)]"></i>
+                            <select id="playbackSpeedSelect" class="player-select" title="سرعت پخش">
+                                <option value="0.5">0.5x</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1x (عادی)</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -367,11 +410,7 @@
         // --- PWA Service Worker Registration ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
+                navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW registered'), err => console.error('SW registration failed: ', err));
             });
         }
         
@@ -379,18 +418,6 @@
         const menuInstallBtn = document.getElementById('menu-install-btn');
         const installContainer = document.getElementById('install-container');
         let deferredPrompt;
-
-        async function handleInstall() {
-            if (!deferredPrompt || !menuInstallBtn) return;
-            
-            deferredPrompt.prompt();
-            await deferredPrompt.userChoice;
-            deferredPrompt = null;
-            
-            if (installContainer) {
-                installContainer.style.display = 'none';
-            }
-        }
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -402,24 +429,26 @@
         });
 
         if (menuInstallBtn) {
-            menuInstallBtn.addEventListener('click', handleInstall);
+            menuInstallBtn.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                if (installContainer) installContainer.style.display = 'none';
+            });
         }
 
         window.addEventListener('appinstalled', () => {
             deferredPrompt = null;
-            if (installContainer) {
-                installContainer.style.display = 'none';
-            }
+            if (installContainer) installContainer.style.display = 'none';
             showToast('برنامه با موفقیت نصب شد!', 'success');
         });
 
         function setupInstallButton() {
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-                return; // App is already installed, so hide the button.
-            }
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
             if (installContainer && menuInstallBtn) {
                 installContainer.style.display = 'block';
-                menuInstallBtn.disabled = true; // Keep it disabled until the prompt is ready.
+                menuInstallBtn.disabled = true;
             }
         }
 
@@ -428,53 +457,39 @@
         const colorPicker = document.getElementById('color-picker');
         const themeCustomizer = document.getElementById('theme-customizer-container');
         const body = document.body;
-        const THEME_COLORS = {
-            cyan: { light: '#0dcaf0', dark: '#00ffff' },
-            blue: { light: '#007bff', dark: '#0d6efd' },
-            purple: { light: '#6f42c1', dark: '#8442ff' },
-            pink: { light: '#d63384', dark: '#ff0073' },
-            green: { light: '#198754', dark: '#00ff7f' },
-            orange: { light: '#fd7e14', dark: '#ffa500' },
-        };
+        const THEME_COLORS = { cyan: '#00ffff', blue: '#0d6efd', purple: '#8442ff', pink: '#ff0073', green: '#00ff7f', orange: '#ffa500' };
 
         function applyTheme(theme) {
             body.classList.toggle('light-theme', theme === 'light');
             themeToggleBtn.innerHTML = theme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-            document.documentElement.style.setProperty('--bg-primary-rgb', theme === 'light' ? '248, 249, 250' : '10, 10, 10');
-            document.documentElement.style.setProperty('--bg-secondary-rgb', theme === 'light' ? '255, 255, 255' : '26, 26, 26');
+            const isLight = theme === 'light';
+            document.documentElement.style.setProperty('--bg-primary-rgb', isLight ? '248, 249, 250' : '10, 10, 10');
+            document.documentElement.style.setProperty('--bg-secondary-rgb', isLight ? '255, 255, 255' : '26, 26, 26');
 
-            if (theme === 'light') {
-                if(themeCustomizer) themeCustomizer.style.display = 'none';
-                document.documentElement.style.removeProperty('--accent-primary');
-                document.documentElement.style.removeProperty('--shadow-color');
-                document.documentElement.style.removeProperty('--highlight-bg');
-                document.documentElement.style.removeProperty('--accent-primary-rgb');
+            if (themeCustomizer) themeCustomizer.style.display = isLight ? 'none' : 'block';
+            if (isLight) {
+                ['--accent-primary', '--shadow-color', '--highlight-bg', '--accent-primary-rgb'].forEach(prop => document.documentElement.style.removeProperty(prop));
             } else {
-                if(themeCustomizer) themeCustomizer.style.display = 'block';
-                const savedColorName = localStorage.getItem('theme_color_name') || 'cyan';
-                applyAccentColor(savedColorName);
+                applyAccentColor(localStorage.getItem('theme_color_name') || 'cyan');
             }
         }
 
         function applyAccentColor(colorName) {
             if (body.classList.contains('light-theme')) return;
-
-            const colorValue = THEME_COLORS[colorName]['dark'];
+            const colorValue = THEME_COLORS[colorName];
             const rgb = colorValue.match(/\w\w/g).map(x => parseInt(x, 16));
-            
             document.documentElement.style.setProperty('--accent-primary', colorValue);
-            document.documentElement.style.setProperty('--shadow-color', `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.3)`);
-            document.documentElement.style.setProperty('--highlight-bg', `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.1)`);
-            document.documentElement.style.setProperty('--accent-primary-rgb', `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`);
-
+            document.documentElement.style.setProperty('--shadow-color', `rgba(${rgb.join(',')}, 0.3)`);
+            document.documentElement.style.setProperty('--highlight-bg', `rgba(${rgb.join(',')}, 0.1)`);
+            document.documentElement.style.setProperty('--accent-primary-rgb', rgb.join(','));
             localStorage.setItem('theme_color_name', colorName);
             updateColorSwatches(colorName);
         }
         
         function populateColorPicker() {
             if (!colorPicker) return;
-            colorPicker.innerHTML = Object.keys(THEME_COLORS).map(name => `
-                <div class="color-swatch" style="background-color: ${THEME_COLORS[name].dark};" data-color="${name}" onclick="applyAccentColor('${name}')"></div>
+            colorPicker.innerHTML = Object.entries(THEME_COLORS).map(([name, color]) => `
+                <div class="color-swatch" style="background-color: ${color};" data-color="${name}" onclick="applyAccentColor('${name}')"></div>
             `).join('');
         }
 
@@ -486,8 +501,7 @@
         }
 
         function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            applyTheme(savedTheme);
+            applyTheme(localStorage.getItem('theme') || 'dark');
         }
 
         // --- APPLICATION LOGIC ---
@@ -500,7 +514,9 @@
         const CATEGORIES = [{id:'animation',name_fa:'انیمیشن',name_en:'Animation',icon:'fa-film'},{id:'auto',name_fa:'خودرو',name_en:'Auto',icon:'fa-car'},{id:'business',name_fa:'کسب و کار',name_en:'Business',icon:'fa-briefcase'},{id:'classic',name_fa:'کلاسیک',name_en:'Classic',icon:'fa-landmark'},{id:'comedy',name_fa:'کمدی',name_en:'Comedy',icon:'fa-masks-theater'},{id:'cooking',name_fa:'آشپزی',name_en:'Cooking',icon:'fa-utensils'},{id:'culture',name_fa:'فرهنگ',name_en:'Culture',icon:'fa-palette'},{id:'documentary',name_fa:'مستند',name_en:'Documentary',icon:'fa-camera-retro'},{id:'education',name_fa:'آموزشی',name_en:'Education',icon:'fa-graduation-cap'},{id:'entertainment',name_fa:'سرگرمی',name_en:'Entertainment',icon:'fa-gamepad'},{id:'family',name_fa:'خانوادگی',name_en:'Family',icon:'fa-users'},{id:'general',name_fa:'عمومی',name_en:'General',icon:'fa-tv'},{id:'history',name_fa:'تاریخ',name_en:'History',icon:'fa-scroll'},{id:'hobby',name_fa:'سرگرمی',name_en:'Hobby',icon:'fa-puzzle-piece'},{id:'kids',name_fa:'کودکان',name_en:'Kids',icon:'fa-child-reaching'},{id:'legislative',name_fa:'قانون گذاری',name_en:'Legislative',icon:'fa-gavel'},{id:'lifestyle',name_fa:'سبک زندگی',name_en:'Lifestyle',icon:'fa-person-walking'},{id:'local',name_fa:'محلی',name_en:'Local',icon:'fa-map-marker-alt'},{id:'movies',name_fa:'فیلم',name_en:'Movies',icon:'fa-clapperboard'},{id:'music',name_fa:'موسیقی',name_en:'Music',icon:'fa-music'},{id:'news',name_fa:'اخبار',name_en:'News',icon:'fa-newspaper'},{id:'politics',name_fa:'سیاسی',name_en:'Politics',icon:'fa-landmark-dome'},{id:'religious',name_fa:'مذهبی',name_en:'Religious',icon:'fa-place-of-worship'},{id:'series',name_fa:'سریال',name_en:'Series',icon:'fa-photo-film'},{id:'science',name_fa:'علمی',name_en:'Science',icon:'fa-flask'},{id:'shop',name_fa:'فروشگاهی',name_en:'Shop',icon:'fa-shopping-cart'},{id:'sports',name_fa:'ورزشی',name_en:'Sports',icon:'fa-futbol'},{id:'travel',name_fa:'سفر',name_en:'Travel',icon:'fa-plane-departure'},{id:'weather',name_fa:'آب و هوا',name_en:'Weather',icon:'fa-cloud-sun'}];
         const COUNTRY_NAME_MAP_FA = {"Afghanistan":"افغانستان","Albania":"آلبانی","Algeria":"الجزایر","Andorra":"آندورا","Argentina":"آرژانتین","Armenia":"ارمنستان","Australia":"استرالیا","Austria":"اتریش","Azerbaijan":"آذربایجان","Bangladesh":"بنگلادش","Belarus":"بلاروس","Belgium":"بلژیک","Bolivia":"بولیوی","Bosnia and Herzegovina":"بوسنی و هرزگوین","Brazil":"برزیل","Bulgaria":"بلغارستان","Canada":"کانادا","Chile":"شیلی","China":"چین","Colombia":"کلمبیا","Croatia":"کرواسی","Cuba":"کوبا","Cyprus":"قبرس","Czechia":"چک","Denmark":"دانمارک","Ecuador":"اکوادور","Egypt":"مصر","Estonia":"استونی","Finland":"فنلاند","France":"فرانسه","Georgia":"گرجستان","Germany":"آلمان","Greece":"یونان","Hungary":"مجارستان","Iceland":"ایسلند","India":"هند","Indonesia":"اندونزی","Iran":"ایران","Iraq":"عراق","Ireland":"ایرلند","Israel":"اسرائیل","Italy":"ایتالیا","Japan":"ژاپن","Kazakhstan":"قزاقستان","Kuwait":"کویت","Latvia":"لتونی","Lebanon":"لبنان","Libya":"لیبی","Lithuania":"لیتوانی","Luxembourg":"لوکزامبورگ","Malaysia":"مالزی","Malta":"مالت","Mexico":"مکزیک","Moldova":"مولداوی","Monaco":"موناکو","Montenegro":"مونته‌نگرو","Morocco":"مراکش","Netherlands":"هلند","New Zealand":"نیوزیلند","North Korea":"کره شمالی","North Macedonia":"مقدونیه شمالی","Norway":"نروژ","Pakistan":"پاکستان","Palestine":"فلسطین","Paraguay":"پاراگوئه","Peru":"پرو","Philippines":"فیلیپین","Poland":"لهستان","Portugal":"پرتغال","Qatar":"قطر","Romania":"رومانی","Russia":"روسیه","San Marino":"سان مارینو","Saudi Arabia":"عربستان سعودی","Serbia":"صربستان","Singapore":"سنگاپور","Slovakia":"اسلواکی","Slovenia":"اسلوونی","South Africa":"آفریقای جنوبی","South Korea":"کره جنوبی","Spain":"اسپانیا","Sweden":"سوئد","Switzerland":"سوئیس","Syria":"سوریه","Taiwan":"تایوان","Thailand":"تایلند","Tunisia":"تونس","Turkey":"ترکیه","Turkmenistan":"ترکمنستان","Ukraine":"اوکراین","United Arab Emirates":"امارات متحده عربی","United Kingdom":"بریتانیا","United States":"ایالات متحده","Uruguay":"اروگوئه","Uzbekistan":"ازبکستان","Venezuela":"ونزوئلا","Vietnam":"ویتنام","Yemen":"یمن"};
         
+        // --- DOM Elements ---
         const channelGrid = document.getElementById('channelGrid');
+        const recordingsGrid = document.getElementById('recordingsGrid');
         const playerModal = document.getElementById('playerModal');
         const channelTitle = document.getElementById('channelTitle');
         const playerContainer = document.getElementById('playerContainer');
@@ -509,19 +525,39 @@
         const pipBtn = document.getElementById('pipBtn');
         const shareBtn = document.getElementById('shareBtn');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const recordBtn = document.getElementById('recordBtn');
+        const recordControlsContainer = document.getElementById('recordControlsContainer');
+        const recordingQualitySelect = document.getElementById('recordingQualitySelect');
+        const speedControlContainer = document.getElementById('speedControlContainer');
+        const playbackSpeedSelect = document.getElementById('playbackSpeedSelect');
+        const qualityControlContainer = document.getElementById('qualityControlContainer');
+        const qualitySelect = document.getElementById('qualitySelect');
+        const audioOnlyBtn = document.getElementById('audioOnlyBtn');
         
+        // --- State Variables ---
         let currentChannelForModal = null;
         let currentPlayer = null, currentHls = null;
         let countriesData = null, currentChannels = [], allChannels = [];
         let favorites = [];
-        let lastSelected = { type: null, id: null };
+        let lastSelected = { type: 'country', id: 'IR' };
+        
+        // --- Recording State ---
+        let db;
+        let mediaRecorder;
+        let recordedBlobs;
+        let isRecording = false;
+        let recordingTimerInterval;
+        let recordingStartTime;
 
+        // --- INITIALIZATION ---
         async function init() {
             setupInstallButton();
             populateColorPicker();
             loadSavedTheme();
             loadFavorites();
+            await initDB();
             
+            // Event Listeners
             themeToggleBtn.addEventListener('click', () => {
                 const newTheme = body.classList.contains('light-theme') ? 'dark' : 'light';
                 localStorage.setItem('theme', newTheme);
@@ -531,6 +567,11 @@
             pipBtn.addEventListener('click', togglePiP);
             shareBtn.addEventListener('click', shareChannel);
             fullscreenBtn.addEventListener('click', toggleFullScreen);
+            recordBtn.addEventListener('click', toggleRecording);
+            playbackSpeedSelect.addEventListener('change', setPlaybackSpeed);
+            qualitySelect.addEventListener('change', setPlaybackQuality);
+            audioOnlyBtn.addEventListener('click', toggleAudioOnly);
+
 
             document.getElementById('openMenuBtn').addEventListener('click', () => {
                 document.getElementById('sideMenu').classList.add('open');
@@ -545,11 +586,12 @@
             
             document.getElementById('favoritesBtn').addEventListener('click', () => { selectFavorites(); closeMenu(); });
             document.getElementById('allChannelsBtn').addEventListener('click', () => { selectAllWindows(); closeMenu(); });
+            document.getElementById('recordingsBtn').addEventListener('click', () => { selectRecordings(); closeMenu(); });
             
             document.getElementById('countriesAccordionBtn').addEventListener('click', () => toggleAccordion('countries'));
             document.getElementById('categoriesAccordionBtn').addEventListener('click', () => toggleAccordion('categories'));
             
-            document.getElementById('channelSearch').addEventListener('input', () => setTimeout(filterAndDisplayChannels, 300));
+            document.getElementById('channelSearch').addEventListener('input', () => setTimeout(filterAndDisplay, 300));
 
             try {
                 const response = await fetch(COUNTRIES_METADATA_URL);
@@ -563,23 +605,170 @@
                 await checkForSharedChannel();
 
                 if (!lastSelected.type) {
-                    if (countriesData['IR']) {
-                        selectCountry('IR', countriesData['IR']);
-                    } else {
-                        document.getElementById('main-subtitle').textContent = "یک موضوع یا کشور را از منو انتخاب کنید";
-                    }
+                    selectCountry('IR', countriesData['IR']);
                 }
                 
-                fetchAllChannels(countriesData);
+                await fetchAllChannels(countriesData);
+                selectCountry('IR', countriesData['IR']); // Default to Iran
             } catch (error) {
                 console.error('Initialization failed:', error);
                 showError('خطا در راه اندازی برنامه.');
             }
         }
         
-        function getChannelId(channel) {
-            return `${channel.country || 'cat'}_${channel.name.replace(/[^a-zA-Z0-9]/g, '')}`;
+        // --- DATABASE (IndexedDB for Recordings) ---
+        async function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('TVRecordingsDB', 1);
+                request.onupgradeneeded = event => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains('recordings')) {
+                        db.createObjectStore('recordings', { keyPath: 'id', autoIncrement: true });
+                    }
+                };
+                request.onsuccess = event => {
+                    db = event.target.result;
+                    resolve();
+                };
+                request.onerror = event => {
+                    console.error('Database error:', event.target.error);
+                    showToast('خطا در دسترسی به پایگاه داده ضبط‌ها', 'error');
+                    reject(event.target.error);
+                };
+            });
         }
+
+        async function saveRecording(blob) {
+            if (!db) return;
+            const transaction = db.transaction(['recordings'], 'readwrite');
+            const store = transaction.objectStore('recordings');
+            const recordingData = {
+                channelName: currentChannelForModal?.name || 'Unknown Channel',
+                timestamp: new Date(),
+                videoBlob: blob
+            };
+            const request = store.add(recordingData);
+            request.onsuccess = () => showToast(`"${recordingData.channelName}" ضبط و ذخیره شد`, 'success');
+            request.onerror = (e) => {
+                console.error('Could not save recording:', e.target.error);
+                showToast('خطا در ذخیره ویدیو', 'error');
+            };
+        }
+
+        async function getRecordings() {
+            if (!db) return [];
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['recordings'], 'readonly');
+                const store = transaction.objectStore('recordings');
+                const request = store.getAll();
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+        
+        async function deleteRecording(id) {
+            if (!db) return;
+            const transaction = db.transaction(['recordings'], 'readwrite');
+            const store = transaction.objectStore('recordings');
+            const request = store.delete(id);
+            request.onsuccess = () => {
+                showToast('ویدیو حذف شد', 'success');
+                selectRecordings(); // Refresh view
+            };
+             request.onerror = (e) => {
+                console.error('Could not delete recording:', e.target.error);
+                showToast('خطا در حذف ویدیو', 'error');
+            };
+        }
+        
+        // --- RECORDING LOGIC ---
+        function toggleRecording() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        function startRecording() {
+            if (!currentPlayer || !(currentPlayer instanceof HTMLVideoElement)) {
+                showToast('ضبط فقط برای ویدیوهای IPTV امکان‌پذیر است.', 'error');
+                return;
+            }
+            const stream = currentPlayer.captureStream();
+            if (!stream) {
+                 showToast('نمی‌توان استریم ویدیو را برای ضبط دریافت کرد.', 'error');
+                return;
+            }
+            
+            recordedBlobs = [];
+            const recorderOptions = { mimeType: 'video/webm; codecs=vp9' };
+            const quality = recordingQualitySelect.value;
+            switch(quality) {
+                case 'high': recorderOptions.videoBitsPerSecond = 2500000; break;
+                case 'medium': recorderOptions.videoBitsPerSecond = 1000000; break;
+                case 'low': recorderOptions.videoBitsPerSecond = 500000; break;
+            }
+
+            try {
+                mediaRecorder = new MediaRecorder(stream, recorderOptions);
+            } catch (e) {
+                console.error('MediaRecorder error:', e);
+                try {
+                     mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                } catch (e2) {
+                    showToast('مرورگر شما از فرمت ضبط پشتیبانی نمی‌کند.', 'error');
+                    return;
+                }
+            }
+
+            isRecording = true;
+            recordBtn.classList.add('recording');
+            recordBtn.title = 'توقف ضبط';
+
+            recordingStartTime = Date.now();
+            updateRecordingTimer();
+            recordingTimerInterval = setInterval(updateRecordingTimer, 1000);
+
+            mediaRecorder.onstop = (event) => {
+                const superBuffer = new Blob(recordedBlobs, { type: 'video/webm' });
+                saveRecording(superBuffer);
+            };
+            
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data && event.data.size > 0) {
+                    recordedBlobs.push(event.data);
+                }
+            };
+            
+            mediaRecorder.start(10);
+            showToast('ضبط شروع شد...', 'success');
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            isRecording = false;
+
+            clearInterval(recordingTimerInterval);
+            recordBtn.innerHTML = '<i class="fas fa-circle"></i>';
+            recordBtn.classList.remove('recording');
+            recordBtn.title = 'ضبط ویدیو';
+        }
+
+        function updateRecordingTimer() {
+            if (!isRecording) return;
+            const elapsed = Date.now() - recordingStartTime;
+            const seconds = Math.floor((elapsed / 1000) % 60);
+            const minutes = Math.floor((elapsed / (1000 * 60)) % 60);
+            const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            recordBtn.textContent = formattedTime;
+        }
+
+
+        // --- UI & DISPLAY ---
+        function getChannelId(channel) { return `${channel.country || 'cat'}_${channel.name.replace(/[^a-zA-Z0-9]/g, '')}`; }
         
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
@@ -590,9 +779,10 @@
             setTimeout(() => { toast.className = ''; }, 3000);
         }
         
-        function showLoading() {
+        function showLoading(isChannels = true) {
+            const grid = isChannels ? channelGrid : recordingsGrid;
             let skeletonHTML = '';
-            for (let i = 0; i < 18; i++) { // 18 is a multiple of 3 and 6
+            for (let i = 0; i < 18; i++) {
                 skeletonHTML += `
                     <div class="skeleton-card rounded-xl h-28 p-4 flex flex-col justify-between">
                         <div class="h-4 bg-[var(--border-color)] rounded w-3/4"></div>
@@ -600,97 +790,115 @@
                             <div class="h-6 w-6 bg-[var(--border-color)] rounded-full"></div>
                             <div class="h-4 bg-[var(--border-color)] rounded w-1/4"></div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }
-            channelGrid.innerHTML = skeletonHTML;
+            grid.innerHTML = skeletonHTML;
             document.getElementById('noResults').classList.add('hidden');
             document.getElementById('resultsCount').classList.add('hidden');
         }
         
-        function displayChannels(channels, searchTerm = '') {
+        function switchView(viewName) {
+            channelGrid.classList.toggle('hidden', viewName !== 'channels');
+            recordingsGrid.classList.toggle('hidden', viewName !== 'recordings');
+            document.getElementById('search-filter-section').style.display = (viewName === 'recordings' ? 'none' : 'block');
+        }
+        
+        function displayChannels(channels) {
+            switchView('channels');
             if (channels.length === 0) {
                 channelGrid.innerHTML = '';
+                document.getElementById('noResultsMessage').textContent = 'لطفاً با عبارت دیگری جستجو کنید یا فیلترها را تغییر دهید.';
                 document.getElementById('noResults').classList.remove('hidden');
                 return;
             }
             document.getElementById('noResults').classList.add('hidden');
-            
-            const lazyImageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        observer.unobserve(img);
-                    }
-                });
-            }, { rootMargin: "0px 0px 100px 0px" });
 
             channelGrid.innerHTML = channels.map(channel => {
                 const channelId = getChannelId(channel);
                 const isFavorite = favorites.some(fav => getChannelId(fav) === channelId);
-                const starClass = isFavorite ? 'fa-solid favorited' : 'fa-regular';
-                
                 return `
                 <div class="channel-card glass-effect rounded-xl overflow-hidden p-4 flex flex-col justify-center items-center text-center h-28 cursor-pointer" onclick='playChannel(${JSON.stringify(channel).replace(/'/g, "\\'")})'>
-                    <i class="favorite-star ${starClass} fa-star" data-channel-id="${channelId}" onclick="toggleFavorite(event, this)"></i>
+                    <i class="favorite-star ${isFavorite ? 'fa-solid favorited' : 'fa-regular'} fa-star" data-channel-id="${channelId}" onclick="toggleFavorite(event, this)"></i>
                     <div class="flex-grow flex flex-col justify-center items-center">
-                        <h3 class="font-semibold text-xs mb-2 text-[var(--text-primary)]">
-                            ${channel.name}
-                        </h3>
-                        ${channel.country ? `<img data-src="${FLAG_API_BASE}${FLAG_COUNTRY_MAPPINGS[channel.country.toUpperCase()] || channel.country.toLowerCase()}.png"
-                             alt="${channel.country}"
-                             class="w-6 h-4 object-cover rounded shadow-md border border-white/20 mb-2"
-                             onerror="this.style.display='none'">` : ''}
+                        <h3 class="font-semibold text-xs mb-2 text-[var(--text-primary)]">${channel.name}</h3>
+                        ${channel.country ? `<img src="${FLAG_API_BASE}${FLAG_COUNTRY_MAPPINGS[channel.country.toUpperCase()] || channel.country.toLowerCase()}.png" alt="${channel.country}" class="w-6 h-4 object-cover rounded shadow-md border border-white/20 mb-2" onerror="this.style.display='none'">` : ''}
                     </div>
                     <div class="flex gap-2 text-xs justify-center">
                         ${channel.iptv_urls.length ? `<span class="px-2 py-1 rounded-full text-xs" style="background-color: var(--highlight-bg); color: var(--accent-primary);"><i class="fas fa-tv ml-1"></i>IPTV</span>` : ''}
                         ${channel.youtube_urls.length ? `<span class="px-2 py-1 rounded-full text-xs" style="background-color: rgba(var(--accent-secondary-rgb), 0.2); color: var(--accent-secondary);"><i class="fab fa-youtube ml-1"></i>YouTube</span>` : ''}
                     </div>
-                </div>
-            `}).join('');
+                </div>`;
+            }).join('');
+        }
+
+        function displayRecordings(recordings) {
+            switchView('recordings');
+            document.getElementById('resultsCount').classList.toggle('hidden', recordings.length === 0);
+            document.getElementById('channelCount').textContent = recordings.length;
             
-            channelGrid.querySelectorAll('img[data-src]').forEach(img => lazyImageObserver.observe(img));
+            if (recordings.length === 0) {
+                recordingsGrid.innerHTML = '';
+                document.getElementById('noResultsMessage').textContent = 'شما هنوز ویدیویی ضبط نکرده‌اید.';
+                document.getElementById('noResults').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('noResults').classList.add('hidden');
+            
+            recordingsGrid.innerHTML = recordings.sort((a,b) => b.timestamp - a.timestamp).map(rec => {
+                const videoUrl = URL.createObjectURL(rec.videoBlob);
+                return `
+                <div class="recording-card glass-effect rounded-xl overflow-hidden p-4 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-semibold text-sm mb-2 text-[var(--text-primary)]">${rec.channelName}</h3>
+                        <p class="text-xs text-[var(--text-secondary)] mb-3">${new Date(rec.timestamp).toLocaleString('fa-IR')}</p>
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button onclick="playRecording('${videoUrl}', '${rec.channelName}')" class="w-10 h-10 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)]"><i class="fas fa-play"></i></button>
+                        <a href="${videoUrl}" download="${rec.channelName}_${rec.timestamp.toISOString()}.webm" class="w-10 h-10 flex items-center justify-center rounded-lg neon-button border border-[var(--accent-primary)] text-[var(--accent-primary)]"><i class="fas fa-download"></i></a>
+                        <button onclick="deleteRecording(${rec.id})" class="w-10 h-10 flex items-center justify-center rounded-lg neon-button border" style="border-color:var(--record-color); color:var(--record-color);"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function toggleFavorite(event, starIcon) {
             event.stopPropagation(); 
             const channelId = starIcon.dataset.channelId;
-            const favoriteIndex = favorites.findIndex(fav => getChannelId(fav) === channelId);
+            const favIndex = favorites.findIndex(fav => getChannelId(fav) === channelId);
             
-            if (favoriteIndex > -1) { 
-                const channelName = favorites[favoriteIndex].name;
-                favorites.splice(favoriteIndex, 1);
+            if (favIndex > -1) { 
+                favorites.splice(favIndex, 1);
                 starIcon.classList.remove('fa-solid', 'favorited');
                 starIcon.classList.add('fa-regular');
-                showToast(`"${channelName}" از علاقه‌مندی‌ها حذف شد`, 'error');
+                showToast(`از علاقه‌مندی‌ها حذف شد`, 'error');
             } else { 
-                const masterList = lastSelected.type === 'all' ? allChannels : currentChannels;
-                const channelToFavorite = masterList.find(ch => getChannelId(ch) === channelId) || allChannels.find(ch => getChannelId(ch) === channelId);
-                if (channelToFavorite) {
-                    favorites.push(channelToFavorite);
+                const masterList = ['all', 'favorites'].includes(lastSelected.type) ? allChannels : currentChannels;
+                const channel = masterList.find(ch => getChannelId(ch) === channelId);
+                if (channel) {
+                    favorites.push(channel);
                     starIcon.classList.add('fa-solid', 'favorited');
                     starIcon.classList.remove('fa-regular');
-                    showToast(`"${channelToFavorite.name}" به علاقه‌مندی‌ها اضافه شد`, 'success');
+                    showToast(`به علاقه‌مندی‌ها اضافه شد`, 'success');
                 }
             }
             saveFavorites();
-            if (lastSelected.type === 'favorites') filterAndDisplayChannels();
+            if (lastSelected.type === 'favorites') filterAndDisplay();
         }
         
+        // --- PLAYER LOGIC ---
         function playChannel(channel) {
             currentChannelForModal = channel;
             playerModal.classList.remove('hidden');
             channelTitle.textContent = channel.name;
-            const hasIptv = channel.iptv_urls && channel.iptv_urls.length > 0;
-            const hasYoutube = channel.youtube_urls && channel.youtube_urls.length > 0;
+            const hasIptv = channel.iptv_urls?.length > 0;
+            const hasYoutube = channel.youtube_urls?.length > 0;
             
             toggleIPTVBtn.classList.toggle('hidden', !hasIptv);
             toggleYouTubeBtn.classList.toggle('hidden', !hasYoutube);
-            pipBtn.classList.toggle('hidden', !hasIptv); // PiP only for IPTV video element
-            shareBtn.classList.toggle('hidden', false);
-            fullscreenBtn.classList.toggle('hidden', false);
+            shareBtn.classList.remove('hidden');
+            fullscreenBtn.classList.remove('hidden');
+            
+            [recordBtn, recordControlsContainer, speedControlContainer, qualityControlContainer, audioOnlyBtn].forEach(el => el.classList.add('hidden'));
 
             if (hasIptv) toggleIPTVBtn.onclick = () => setupIPTVPlayer(channel.iptv_urls[0]);
             if (hasYoutube) toggleYouTubeBtn.onclick = () => setupYouTubePlayer(channel.youtube_urls[0]);
@@ -698,21 +906,60 @@
             if (playerContainer.innerHTML !== '') playerContainer.innerHTML = '';
             hasIptv ? setupIPTVPlayer(channel.iptv_urls[0]) : hasYoutube ? setupYouTubePlayer(channel.youtube_urls[0]) : null;
         }
+        
+        function playRecording(url, title) {
+            playerModal.classList.remove('hidden');
+            channelTitle.textContent = "پخش ضبط: " + title;
+            
+            [toggleIPTVBtn, toggleYouTubeBtn, pipBtn, shareBtn, recordBtn, recordControlsContainer, qualityControlContainer, audioOnlyBtn].forEach(btn => btn.classList.add('hidden'));
+            fullscreenBtn.classList.remove('hidden');
+            speedControlContainer.classList.remove('hidden');
+
+            playerContainer.innerHTML = `<video controls autoplay class="w-full h-full" src="${url}"></video>`;
+            currentPlayer = playerContainer.querySelector('video');
+            currentPlayer.oncanplay = () => {
+                playbackSpeedSelect.value = 1;
+                currentPlayer.playbackRate = 1;
+            };
+        }
 
         function setupIPTVPlayer(url) {
             if (currentHls) currentHls.destroy();
-            playerContainer.innerHTML = `<video controls autoplay class="w-full h-full"></video>`;
+            playerContainer.innerHTML = `<video controls autoplay class="w-full h-full relative z-10"></video>`;
             const video = playerContainer.querySelector('video');
             currentPlayer = video;
+            
+            [pipBtn, recordBtn, recordControlsContainer, speedControlContainer, audioOnlyBtn].forEach(el => el.classList.remove('hidden'));
+            
+            playbackSpeedSelect.value = 1;
+            video.playbackRate = 1;
+            qualityControlContainer.classList.add('hidden');
+            qualitySelect.innerHTML = '';
+            recordingQualitySelect.value = 'source';
+            
+            // MODIFIED: Reset audio only button state
+            playerContainer.classList.remove('audio-mode');
+            audioOnlyBtn.classList.remove('active');
+            audioOnlyBtn.innerHTML = '<i class="fas fa-music"></i>';
+            audioOnlyBtn.title = 'فقط صدا';
+
+
             if (Hls.isSupported()) {
-                const hls = new Hls();
-                currentHls = hls;
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(e => console.error(e)));
+                currentHls = new Hls();
+                currentHls.loadSource(url);
+                currentHls.attachMedia(video);
+
+                currentHls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                    if (data.levels.length > 1) {
+                        qualitySelect.innerHTML = '<option value="-1">خودکار</option>' + 
+                            data.levels.map((level, index) => `<option value="${index}">${level.height}p</option>`).join('');
+                        qualitySelect.value = currentHls.currentLevel;
+                        qualityControlContainer.classList.remove('hidden');
+                    }
+                });
+
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
-                video.addEventListener('loadedmetadata', () => video.play().catch(e => console.error(e)));
             }
             toggleIPTVBtn.style.opacity = '1'; toggleYouTubeBtn.style.opacity = '0.5';
         }
@@ -720,17 +967,28 @@
         function setupYouTubePlayer(url) {
             if (currentHls) currentHls.destroy();
             currentPlayer = null;
+            
+            [pipBtn, recordBtn, recordControlsContainer, speedControlContainer, qualityControlContainer, audioOnlyBtn].forEach(el => el.classList.add('hidden'));
+
             const videoId = new URL(url).searchParams.get('v');
             playerContainer.innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
             toggleYouTubeBtn.style.opacity = '1'; toggleIPTVBtn.style.opacity = '0.5';
         }
 
         function closePlayer() {
+            if (isRecording) stopRecording();
             playerModal.classList.add('hidden');
             if (currentHls) currentHls.destroy();
             playerContainer.innerHTML = '';
             currentPlayer = null;
             currentChannelForModal = null;
+            
+            // MODIFIED: Reset audio only button state on close
+            playerContainer.classList.remove('audio-mode');
+            audioOnlyBtn.classList.remove('active');
+            audioOnlyBtn.innerHTML = '<i class="fas fa-music"></i>';
+            audioOnlyBtn.title = 'فقط صدا';
+
             if (document.pictureInPictureElement) document.exitPictureInPicture();
             if (document.fullscreenElement) document.exitFullscreen();
         }
@@ -743,30 +1001,43 @@
                 } else {
                     await currentPlayer.requestPictureInPicture();
                 }
-            } catch (error) {
-                console.error("PiP Error:", error);
-                showToast('خطا در فعال‌سازی تصویر در تصویر', 'error');
+            } catch (error) { showToast('خطا در فعال‌سازی تصویر در تصویر', 'error'); }
+        }
+        
+        function setPlaybackSpeed(event) {
+            if (currentPlayer) {
+                currentPlayer.playbackRate = parseFloat(event.target.value);
+            }
+        }
+        function setPlaybackQuality(event) {
+            if (currentHls) {
+                currentHls.currentLevel = parseInt(event.target.value, 10);
+            }
+        }
+        
+        // MODIFIED: Toggle audio only with icon and title change
+        function toggleAudioOnly() {
+            const isActive = playerContainer.classList.toggle('audio-mode');
+            audioOnlyBtn.classList.toggle('active', isActive);
+            if (isActive) {
+                audioOnlyBtn.innerHTML = '<i class="fas fa-video"></i>';
+                audioOnlyBtn.title = 'نمایش تصویر';
+            } else {
+                audioOnlyBtn.innerHTML = '<i class="fas fa-music"></i>';
+                audioOnlyBtn.title = 'فقط صدا';
             }
         }
 
         function shareChannel() {
             if (!currentChannelForModal) return;
-            const channelId = getChannelId(currentChannelForModal);
-            const shareUrl = `${window.location.origin}${window.location.pathname}?channel=${channelId}`;
-            navigator.clipboard.writeText(shareUrl).then(() => {
-                showToast('لینک کانال کپی شد!', 'success');
-            }, () => {
-                showToast('خطا در کپی کردن لینک', 'error');
-            });
+            const shareUrl = `${window.location.origin}${window.location.pathname}?channel=${getChannelId(currentChannelForModal)}`;
+            navigator.clipboard.writeText(shareUrl).then(() => showToast('لینک کانال کپی شد!', 'success'), () => showToast('خطا در کپی کردن لینک', 'error'));
         }
         
         async function checkForSharedChannel() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const channelId = urlParams.get('channel');
+            const channelId = new URLSearchParams(window.location.search).get('channel');
             if (!channelId) return;
-
             await fetchAllChannels(countriesData, true); 
-            
             const sharedChannel = allChannels.find(ch => getChannelId(ch) === channelId);
             if (sharedChannel) {
                 playChannel(sharedChannel);
@@ -777,12 +1048,10 @@
         async function fetchAllChannels(countries, forceWait = false) {
             if (allChannels.length > 0 && !forceWait) return;
             document.getElementById('allChannelsBtn').disabled = true;
-            const channelPromises = Object.keys(countries)
+            const promises = Object.keys(countries)
                 .filter(code => countries[code].hasChannels)
                 .map(code => fetch(`${COUNTRY_BASE_URL}${code.toLowerCase()}.json`).then(res => res.ok ? res.json() : []).catch(() => []));
-
-            const results = await Promise.all(channelPromises);
-            allChannels = results.flat(); 
+            allChannels = (await Promise.all(promises)).flat();
             document.getElementById('allChannelsBtn').disabled = false;
         }
         
@@ -795,38 +1064,53 @@
         }
         function loadFavorites() { favorites = JSON.parse(localStorage.getItem('tvFavorites') || '[]'); }
         function saveFavorites() { localStorage.setItem('tvFavorites', JSON.stringify(favorites)); }
-        function selectFavorites() { lastSelected = {type:'favorites'}; document.getElementById('main-title').innerHTML = `<i class="fas fa-star mr-2" style="color: var(--favorite-color);"></i>علاقه‌مندی‌ها`; document.getElementById('main-subtitle').textContent = `کانال‌هایی که ستاره‌دار کرده‌اید`; filterAndDisplayChannels(); }
-        function selectAllWindows() { lastSelected = {type:'all'}; document.getElementById('main-title').innerHTML = `<i class="fas fa-globe-europe mr-2"></i>همه‌ی کانال‌ها`; document.getElementById('main-subtitle').textContent = `نمایش تمام کانال‌های موجود`; currentChannels = allChannels; filterAndDisplayChannels(); }
+        
+        function selectFavorites() { lastSelected = {type:'favorites'}; document.getElementById('main-title').innerHTML = `<i class="fas fa-star mr-2" style="color: var(--favorite-color);"></i>علاقه‌مندی‌ها`; document.getElementById('main-subtitle').textContent = `کانال‌هایی که ستاره‌دار کرده‌اید`; filterAndDisplay(); }
+        async function selectRecordings() { lastSelected = {type:'recordings'}; document.getElementById('main-title').innerHTML = `<i class="fas fa-hdd mr-2"></i>ویدیوهای ضبط شده`; document.getElementById('main-subtitle').textContent = `ویدیوهایی که ضبط و ذخیره کرده‌اید`; const recs = await getRecordings(); displayRecordings(recs); }
+        function selectAllWindows() { lastSelected = {type:'all'}; document.getElementById('main-title').innerHTML = `<i class="fas fa-globe-europe mr-2"></i>همه‌ی کانال‌ها`; document.getElementById('main-subtitle').textContent = `نمایش تمام کانال‌های موجود`; currentChannels = allChannels; filterAndDisplay(); }
         function selectCountry(code, data) { lastSelected = {type:'country', id:code}; document.getElementById('main-title').textContent = `کانال‌های کشور ${data.country_fa}`; document.getElementById('main-subtitle').innerHTML = `کانال‌های تلویزیونی زنده از <img src="${FLAG_API_BASE}${FLAG_COUNTRY_MAPPINGS[code.toUpperCase()] || code.toLowerCase()}.png" class="w-5 h-4 inline-block mx-1 rounded-sm"> ${data.country}`; loadChannels(`${COUNTRY_BASE_URL}${code.toLowerCase()}.json`); }
         function selectCategory(id, name, icon) { lastSelected = {type:'category', id:id}; document.getElementById('main-title').innerHTML = `<i class="fas ${icon} mr-2"></i>موضوع: ${name}`; document.getElementById('main-subtitle').textContent = `کانال‌های مرتبط با ${name}`; loadChannels(`${CATEGORIES_BASE_URL}${id}.json`); }
-        async function loadChannels(url) { showLoading(); try { const res = await fetch(url); currentChannels = await res.json(); filterAndDisplayChannels(); } catch (e) { showError('خطا در بارگذاری کانال‌ها.'); } }
-        function filterAndDisplayChannels() {
+        
+        async function loadChannels(url) { showLoading(); try { const res = await fetch(url); currentChannels = await res.json(); filterAndDisplay(); } catch (e) { showError('خطا در بارگذاری کانال‌ها.'); } }
+        
+        function filterAndDisplay() {
+            if (lastSelected.type === 'recordings') return;
             let source = [];
             if (lastSelected.type === 'favorites') source = favorites;
             else if (lastSelected.type === 'all') source = allChannels;
             else source = currentChannels;
+            
             const searchTerm = document.getElementById('channelSearch').value.toLowerCase();
             const activeSourceFilter = document.querySelector('#sourceFilters .filter-btn.active').dataset.filter;
-            const filtered = source.filter(ch => ch.name.toLowerCase().includes(searchTerm) && (activeSourceFilter === 'all' || (activeSourceFilter === 'iptv' && ch.iptv_urls.length) || (activeSourceFilter === 'youtube' && ch.youtube_urls.length)));
+            
+            const filtered = source.filter(ch => 
+                ch.name.toLowerCase().includes(searchTerm) && 
+                (activeSourceFilter === 'all' || 
+                (activeSourceFilter === 'iptv' && ch.iptv_urls.length) || 
+                (activeSourceFilter === 'youtube' && ch.youtube_urls.length))
+            );
+            
             displayChannels(filtered);
             document.getElementById('channelCount').textContent = filtered.length;
             document.getElementById('resultsCount').classList.toggle('hidden', filtered.length === 0);
         }
-        function toggleSourceFilter(filter) { document.querySelectorAll('#sourceFilters .filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === filter)); filterAndDisplayChannels(); }
+        
+        function toggleSourceFilter(filter) { document.querySelectorAll('#sourceFilters .filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === filter)); filterAndDisplay(); }
+        
         function populateCategoriesList() {
+            const closeMenu = () => document.getElementById('closeMenuBtn').click();
             document.getElementById('categoriesAccordionContent').innerHTML = CATEGORIES.map(c => 
-                `<a href="#" class="menu-item flex justify-between items-center gap-3 px-2 py-2 hover:bg-[var(--highlight-bg)] rounded-md" onclick="event.preventDefault(); selectCategory('${c.id}', '${c.name_fa}', '${c.icon}'); document.getElementById('closeMenuBtn').click()">
-                    <div class="flex items-center gap-2">
-                        <i class="fas ${c.icon} w-5 text-center"></i>
-                        <span class="font-normal text-xs">${c.name_fa}</span>
-                    </div>
+                `<a href="#" class="menu-item flex justify-between items-center gap-3 px-2 py-2 hover:bg-[var(--highlight-bg)] rounded-md" onclick="event.preventDefault(); selectCategory('${c.id}', '${c.name_fa}', '${c.icon}'); closeMenu()">
+                    <div class="flex items-center gap-2"><i class="fas ${c.icon} w-5 text-center"></i><span class="font-normal text-xs">${c.name_fa}</span></div>
                     <span class="text-xs font-normal text-gray-400 uppercase" dir="ltr">${c.name_en}</span>
                 </a>`
             ).join('');
         }
+        
         function populateCountriesList(data) {
+             const closeMenu = () => document.getElementById('closeMenuBtn').click();
              document.getElementById('countriesAccordionContent').innerHTML = Object.entries(data).filter(([_,d])=>d.hasChannels).sort((a,b)=>a[1].country_fa.localeCompare(b[1].country_fa,'fa')).map(([c,d])=>
-                `<a href="#" class="menu-item flex justify-between items-center gap-3 px-2 py-2 hover:bg-[var(--highlight-bg)] rounded-md" onclick='event.preventDefault(); selectCountry("${c}", ${JSON.stringify(d).replace(/'/g, "\\'")}); document.getElementById("closeMenuBtn").click()'>
+                `<a href="#" class="menu-item flex justify-between items-center gap-3 px-2 py-2 hover:bg-[var(--highlight-bg)] rounded-md" onclick='event.preventDefault(); selectCountry("${c}", ${JSON.stringify(d).replace(/'/g, "\\'")}); closeMenu()'>
                     <div class="flex items-center gap-2">
                         <img src="${FLAG_API_BASE}${FLAG_COUNTRY_MAPPINGS[c.toUpperCase()] || c.toLowerCase()}.png" class="w-5 h-5 object-contain rounded-sm">
                         <span class="font-normal text-xs">${d.country_fa}</span>
@@ -835,8 +1119,10 @@
                 </a>`
             ).join('');
         }
+        
         function showError(message) { channelGrid.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i><p>${message}</p></div>`; }
-        function toggleFullScreen() { const elem = playerContainer; if (!document.fullscreenElement) { elem.requestFullscreen().catch(err => console.error(err)); } else { document.exitFullscreen(); } }
+        function toggleFullScreen() { const elem = playerModal; if (!document.fullscreenElement) { elem.requestFullscreen().catch(err => console.error(err)); } else { document.exitFullscreen(); } }
+        
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if(document.getElementById('sideMenu').classList.contains('open')) { document.getElementById('closeMenuBtn').click(); } else if (!playerModal.classList.contains('hidden')) { closePlayer(); } } });
         document.addEventListener('DOMContentLoaded', init);
     </script>
